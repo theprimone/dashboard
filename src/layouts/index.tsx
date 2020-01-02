@@ -1,13 +1,14 @@
 import React from 'react';
+import { GlobalProvider } from '@/components/GlobalContext';
 // import styles from './index.css';
 
-const BasicLayout: React.FC = props => {
+const GlobalLayout: React.FC = props => {
   return (
-    <div>
+    <GlobalProvider>
       {/* <h1 className={styles.title}>Yay! Welcome to umi!</h1> */}
       {props.children}
-    </div>
+    </GlobalProvider>
   );
 };
 
-export default BasicLayout;
+export default GlobalLayout;
