@@ -1,14 +1,20 @@
 import { IConfig } from 'umi-types';
 
 // ref: https://umijs.org/config/
-const config: IConfig =  {
+const config: IConfig = {
   treeShaking: true,
   routes: [
     {
       path: '/',
       component: '../layouts/index',
       routes: [
-        { path: '/', component: '../pages/index' }
+        {
+          path: '/',
+          component: '../layouts/BasicLayout',
+          routes: [
+            { path: '/', component: '../pages/index' }
+          ],
+        }
       ]
     }
   ],
