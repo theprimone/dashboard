@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useContext } from 'react';
 import {
   Card,
   CardHeader,
@@ -12,10 +12,9 @@ import {
   createStyles,
   Theme,
 } from '@material-ui/core';
-import { useAsync } from 'react-use';
-import { parse } from 'qs';
-import { getToken } from '@/services/authorize';
-import { clientWithAuth } from '@/utils/constants';
+import Spin from '@/components/Spin';
+import GlobalContext from '@/components/GlobalContext/context';
+import { useUserInfo } from '@/utils/hooks/users';
 
 function authorize() {
   window.location.href = `https://github.com/login/oauth/authorize?client_id=fba2176a59765757bbf9&scope=public_repo`;
@@ -33,44 +32,42 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 export default function PersonalInfo() {
   const classes = useStyles();
+  const { authorised } = useContext(GlobalContext);
+  const { value, loading } = useUserInfo();
 
-  const token = localStorage.getItem("token");
-  
-  const { code } = parse(location.search.replace(/^\?/, ''));
-  let state = {};
-  if (code) {
-    state = useAsync(async () => await getToken(code), [code]);
-  }
-  console.log(state);
+  const isReponseOk = authorised && !loading && value && value.status === 200;
 
   return (
-    <Card className={classes.card}>
-      <CardActionArea>
-        <CardHeader
-          avatar={
-            <Avatar
-              alt="theprimone"
-              src="https://avatars2.githubusercontent.com/u/18096089?v=4"
-            />
-          }
-          title="theprimone"
-          subheader="2016-01-01"
-        />
-        <CardContent>
-          <Typography variant="body2" color="textSecondary" component="p">
-            如果不去做的话，那就意味着不重要，至少现目前来看。
-          </Typography>
-        </CardContent>
-      </CardActionArea>
-      <CardActions>
-        <Button
-          size="small"
-          color="primary"
-          onClick={authorize}
-        >
-          {token ? "Homepage" : "Login"}
-        </Button>
-      </CardActions>
-    </Card>
+    <Spin spinning={loading}>
+      <Card className={classes.card}>
+        <CardActionArea>
+          <CardHeader
+            avatar={
+              <Avatar
+                alt={isReponseOk ? value!.data.login : "Visitor"}
+                src={isReponseOk ? value!.data.avatar_url : undefined}
+              />
+            }
+            title={isReponseOk ? value!.data.login : "Visitor"}
+            subheader={isReponseOk ? value!.data.created_at : "Hello."}
+          />
+          <CardContent>
+            <Typography variant="body2" color="textSecondary" component="p">
+              {isReponseOk ? value!.data.bio : "Click button to authorize by github."}
+            </Typography>
+          </CardContent>
+        </CardActionArea>
+        <CardActions>
+          <Button
+            size="small"
+            color="primary"
+            onClick={authorize}
+          >
+            {/* {token ? "Homepage" : "Login"} */}
+            authorize
+          </Button>
+        </CardActions>
+      </Card>
+    </Spin>
   );
 }
