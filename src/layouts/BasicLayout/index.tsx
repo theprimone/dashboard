@@ -1,4 +1,5 @@
 import React, { useContext } from 'react';
+import router from 'umi/router';
 import GlobalContext from '@/components/GlobalContext/context';
 import { useCode } from '@/utils/hooks/users';
 import Octokit from '@octokit/rest';
@@ -12,6 +13,7 @@ const BasicLayout: React.FC = props => {
       return <p>Get token...</p>;
     } else if (token) {
       setOctokit(new Octokit({ auth: token }));
+      router.replace('/');
     }
     return <p>Get token failed.</p>
   }
