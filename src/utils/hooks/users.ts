@@ -6,13 +6,13 @@ import { getToken } from '@/services/authorize';
 
 export function useCode() {
   const { code } = parse(location.search.replace(/^\?/, ''));
-  let state = { loading: true };
+  let state = { loading: true } as any;
   if (code) {
     state = useAsync(async () => await getToken(code), [code]);
   }
   const token = state?.value?.data?.access_token;
-  
-  return [code, token];
+
+  return [code, token, state];
 }
 
 export function useUserInfo() {
