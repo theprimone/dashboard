@@ -3,6 +3,8 @@ import request from '@/utils/request';
 
 export interface GetTokenResponse {
   access_token: string;
+  token_type: string;
+  scope: string;
 }
 export async function getToken(code: string): Promise<GetTokenResponse> {
   return await request(`${CORS_PROXY_URL}/${GET_TOKEN_URL}`, {
