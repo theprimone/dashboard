@@ -6,13 +6,13 @@ import { parse } from 'qs';
 import { getToken, GetTokenResponse } from '@/services/authorize';
 
 
-export function useCode(): [string, string, AsyncState<GetTokenResponse>] {
+export function useCode(): [string, string | undefined, AsyncState<GetTokenResponse>] {
   const { code } = parse(location.search.replace(/^\?/, ''));
-  let state = { loading: true } as any;
+  let state: AsyncState<GetTokenResponse> = { loading: true };
   if (code) {
     state = useAsync(async () => await getToken(code), [code]);
   }
-  const token = state?.value?.data?.access_token;
+  const token = state?.value?.access_token;
 
   return [code, token, state];
 }
