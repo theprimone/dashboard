@@ -13,6 +13,7 @@ const BasicLayout: React.FC = props => {
       return <p>Get token...</p>;
     } else if (token) {
       setOctokit(new Octokit({ auth: token }));
+      localStorage.setItem("TOKEN", token);
       router.replace('/');
     }
     return <p>Get token failed.</p>
