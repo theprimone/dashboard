@@ -3,11 +3,11 @@ import Octokit from '@octokit/rest';
 
 export const isAuthorised = () => !!localStorage.getItem("TOKEN");
 
-export const defaultGlobalData = {
+export const setDefaultGlobalData = () => ({
   authorised: isAuthorised(),
   octokit: new Octokit(isAuthorised ? { auth: localStorage.getItem("TOKEN")! } : undefined),
   setOctokit: () => { },
-}
+})
 
 export interface GlobalConsumerProps {
   authorised: boolean;

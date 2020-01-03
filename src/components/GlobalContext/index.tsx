@@ -1,7 +1,7 @@
 import React from 'react';
 import _merge from 'lodash/merge';
 import Octokit from '@octokit/rest';
-import GlobalContext, { GlobalConsumerProps, defaultGlobalData } from './context';
+import GlobalContext, { GlobalConsumerProps, setDefaultGlobalData } from './context';
 
 export interface GlobalProviderProps {
   octokit?: Octokit;
@@ -15,7 +15,7 @@ export class GlobalProvider extends React.Component<GlobalProviderProps, GlobalP
     super(props);
 
     this.state = {
-      ...defaultGlobalData,
+      ...setDefaultGlobalData(),
       setOctokit: this.setOctokit,
     };
   }
