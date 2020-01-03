@@ -5,13 +5,15 @@ import Octokit from '@octokit/rest';
 
 const BasicLayout: React.FC = props => {
   const { setOctokit } = useContext(GlobalContext);
-  const [code, token] = useCode();
+  const [code, token, state] = useCode();
 
-  if (code && !token) {
-    return <p>Get token...</p>;
-  }
-  if (token) {
-    setOctokit(new Octokit({ auth: token }));
+  if (code) {
+    if (state.loading) {
+      return <p>Get token...</p>;
+    } else if (token) {
+      setOctokit(new Octokit({ auth: token }));
+    }
+    return <p>Get token failed.</p>
   }
 
   return (
