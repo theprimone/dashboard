@@ -2,7 +2,7 @@ import React from 'react';
 import {
   Container,
 } from '@material-ui/core';
-import PersonalInfo from '@/components/PersonalInfo';
+import PersonalInfo from '@/business-components/PersonalInfo';
 
 const DashBoard: React.FC = () => {
   return (
