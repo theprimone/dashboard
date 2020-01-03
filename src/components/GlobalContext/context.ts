@@ -11,6 +11,9 @@ export const setDefaultGlobalData = () => ({
 
 export interface GlobalConsumerProps {
   authorised: boolean;
+  /**
+   * ref: https://octokit.github.io/rest.js
+   */
   octokit: Octokit;
   setOctokit: (octokit: Octokit) => void;
 }
