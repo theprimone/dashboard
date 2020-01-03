@@ -40,7 +40,10 @@ const config: IConfig = {
         ],
       },
     }],
+    'umi-plugin-gh-pages',
   ],
+  base: '/dashboard/',
+  publicPath: '/dashboard/',
 }
 
 export default config;

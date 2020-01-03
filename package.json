@@ -1,12 +1,16 @@
 {
+  "name": "dashboard",
   "private": true,
+  "homepage": "https://theprimone.top/dashboard",
   "scripts": {
     "start": "umi dev",
     "build": "umi build",
     "test": "umi test",
     "lint:es": "eslint --ext .js src mock tests",
     "lint:ts": "tslint \"src/**/*.ts\" \"src/**/*.tsx\"",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist"
   },
   "dependencies": {
     "@material-ui/core": "^4.8.2",
@@ -40,6 +44,7 @@
     "tslint-eslint-rules": "^5.4.0",
     "tslint-react": "^3.6.0",
     "umi": "^2.9.0",
+    "umi-plugin-gh-pages": "^0.2.0",
     "umi-plugin-react": "^1.8.0",
     "umi-types": "^0.3.0"
   },
