@@ -7,14 +7,6 @@ const useStyles = makeStyles((theme: Theme) =>
     wrapper: {
       margin: theme.spacing(1),
       position: 'relative',
-      '&:after': {
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        content: "' '",
-      }
     },
     buttonProgress: {
       position: 'absolute',
