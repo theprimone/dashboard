@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import clsx from 'clsx';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import ErrorIcon from '@material-ui/icons/Error';
@@ -79,7 +80,7 @@ function SnackbarContentWrapper(props: SnackbarContentWrapperProps) {
 export interface CustomSnackBarProps extends SnackbarProps, Omit<SnackbarContentWrapperProps, 'onClose'> {
 }
 
-export default function CustomizedSnackbars(props: CustomSnackBarProps) {
+export default function CustomizedSnackbar(props: CustomSnackBarProps) {
   const { variant, message, onClose, ...rest } = props;
   return (
     <Snackbar
@@ -100,6 +101,44 @@ export default function CustomizedSnackbars(props: CustomSnackBarProps) {
   );
 }
 
-export const renderSnackBar = (props: CustomSnackBarProps) => {
-  
+CustomizedSnackbar.newInstance = (properties: CustomSnackBarProps, callback: any) => {
+  const div = document.createElement('div');
+  document.body.appendChild(div);
+
+  let called = false;
+  function ref(snackbar: typeof CustomizedSnackbar) {
+    if (called) {
+      return;
+    }
+    called = true;
+    callback({
+      component: snackbar,
+      destroy() {
+        ReactDOM.unmountComponentAtNode(div);
+        div.parentNode!.removeChild(div);
+      },
+    });
+  }
+  ReactDOM.render(<CustomizedSnackbar {...properties} ref={ref} />, div);
 }
+
+// TODO: static method to render
+// ref: https://github.com/react-component/notification
+//      https://github.com/ant-design/ant-design/blob/master/components/notification/index.tsx
+
+// export const snackbar = {
+//   success: (message: string) => {
+//     CustomizedSnackbar.newInstance({ message, variant: 'success' }, (snackbar) => {
+//       snackbar
+//     });
+//   },
+//   warning: (message: string) => {
+
+//   },
+//   error: (message: string) => {
+
+//   },
+//   info: (message: string) => {
+
+//   },
+// }
