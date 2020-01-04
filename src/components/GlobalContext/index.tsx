@@ -1,5 +1,6 @@
 import React from 'react';
 import _merge from 'lodash/merge';
+import { UsersGetAuthenticatedResponse } from '@octokit/rest';
 import Octokit from '@octokit/rest';
 import GlobalContext, { GlobalConsumerProps, setDefaultGlobalData } from './context';
 
@@ -17,6 +18,7 @@ export class GlobalProvider extends React.Component<GlobalProviderProps, GlobalP
     this.state = {
       ...setDefaultGlobalData(),
       setOctokit: this.setOctokit,
+      setUserInfo: this.setUserInfo,
     };
   }
 
@@ -24,6 +26,12 @@ export class GlobalProvider extends React.Component<GlobalProviderProps, GlobalP
     this.setState({
       authorised: true,
       octokit,
+    });
+  }
+
+  setUserInfo = (data: UsersGetAuthenticatedResponse) => {
+    this.setState({
+      userInfo: data,
     });
   }
 
