@@ -1,21 +1,84 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import {
   Container,
+  Grid,
 } from '@material-ui/core';
+import { TransitionMotion, spring, presets } from 'react-motion';
+import GlobalContext from '@/components/GlobalContext/context';
 import PersonalInfo from '@/business-components/PersonalInfo';
+import Repos from '@/business-components/Repos';
+import styles from './index.less';
+
+function FadeInOut({ children }: { children: { key: string; node: JSX.Element }[] }) {
+  function willEnter() {
+    return { opacity: 0 };
+  }
+
+  function willLeave() {
+    return { opacity: spring(0, presets.stiff) };
+  }
+
+  return (
+    <TransitionMotion
+      willEnter={willEnter}
+      willLeave={willLeave}
+      styles={children.map(item => ({
+        key: item.key,
+        data: item.node,
+        style: {
+          opacity: spring(1, presets.stiff),
+        },
+      }))}
+    >
+      {(interpolatedStyles) => (
+        <div>
+          {interpolatedStyles.map((config) => {
+            console.log(config);
+            return (
+              <div key={config.key} style={config.style}>
+                {config.data}
+              </div>
+            )
+          })}
+        </div>
+      )}
+    </TransitionMotion>
+  )
+}
 
 const DashBoard: React.FC = () => {
+  const { authorised } = useContext(GlobalContext);
+
   return (
-    <Container
-      style={{
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: '100vh'
-      }}
-    >
-      <PersonalInfo />
-    </Container>
+    <>
+      <FadeInOut>
+        {authorised ? [
+          {
+            key: 'dashboard',
+            node: (
+              <Container>
+                <Grid container spacing={1}>
+                  <Grid item xs={4}>
+                    <PersonalInfo />
+                  </Grid>
+                  <Grid item xs={8}>
+                    <Repos />
+                  </Grid>
+                </Grid>
+              </Container>
+            ),
+          }] : [
+            {
+              key: 'authorise',
+              node: (
+                <div className={styles.center}>
+                  <PersonalInfo />
+                </div>
+              ),
+            }
+          ]}
+      </FadeInOut>
+    </>
   )
 }
 
