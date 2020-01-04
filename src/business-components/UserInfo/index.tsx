@@ -34,7 +34,7 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
   },
 }));
 
-export default function PersonalInfo() {
+export default function UserInfo() {
   const classes = useStyles();
   const { authorised, setOctokit, userInfo } = useContext(GlobalContext);
   const { loading } = useUserInfo();
