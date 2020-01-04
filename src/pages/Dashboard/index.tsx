@@ -57,7 +57,7 @@ const DashBoard: React.FC = () => {
             key: 'dashboard',
             node: (
               <Container disableGutters>
-                <Grid container spacing={1}>
+                <Grid container>
                   {/*breakpoints ref: https://material-ui.com/customization/breakpoints/ */}
                   <Grid item xs={12} sm={4}>
                     <UserInfo />
