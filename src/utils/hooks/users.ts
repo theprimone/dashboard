@@ -5,7 +5,6 @@ import GlobalContext from '@/components/GlobalContext/context';
 import { parse } from 'qs';
 import { getToken, GetTokenResponse } from '@/services/authorize';
 
-
 export function useCode(): [string, string | undefined, AsyncState<GetTokenResponse>] {
   const { code } = parse(location.search.replace(/^\?/, ''));
   let state: AsyncState<GetTokenResponse> = { loading: true };
