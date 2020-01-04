@@ -36,17 +36,17 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 export default function PersonalInfo() {
   const classes = useStyles();
-  const { authorised, setOctokit } = useContext(GlobalContext);
-  const { value, loading } = useUserInfo();
+  const { authorised, setOctokit, userInfo } = useContext(GlobalContext);
+  const { loading } = useUserInfo();
 
-  const isReponseOk = authorised && !loading && value && value.status === 200;
+  const isReponseOk = authorised && !loading && userInfo;
 
   const handleClick = () => {
     setOctokit(new octokit({ auth: 'abf85bed5650b92c79ef363a4f715c5ba2fe00de' }));
     return;
 
     if (authorised) {
-      window.open(value?.data.html_url, '_blank');
+      window.open(userInfo?.html_url, '_blank');
       return;
     }
     authorize();
@@ -58,16 +58,16 @@ export default function PersonalInfo() {
         <CardHeader
           avatar={
             <Avatar
-              alt={isReponseOk ? value!.data.login : "Visitor"}
-              src={isReponseOk ? value!.data.avatar_url : undefined}
+              alt={isReponseOk ? userInfo!.login : "Visitor"}
+              src={isReponseOk ? userInfo!.avatar_url : undefined}
             />
           }
-          title={isReponseOk ? value!.data.login : "Visitor"}
-          subheader={isReponseOk ? moment(value!.data.created_at).format('YYYY-MM-DD HH:mm:ss') : "Hello."}
+          title={isReponseOk ? userInfo!.login : "Visitor"}
+          subheader={isReponseOk ? moment(userInfo!.created_at).format('YYYY-MM-DD HH:mm:ss') : "Hello."}
         />
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
-            {isReponseOk ? value!.data.bio : "Click button to authorize by github."}
+            {isReponseOk ? userInfo!.bio : "Click button to authorize by github."}
           </Typography>
         </CardContent>
         <CardActions>
