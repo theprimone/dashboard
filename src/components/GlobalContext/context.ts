@@ -11,11 +11,13 @@ export const setDefaultGlobalData = () => ({
   octokit: new Octokit(isAuthorised ? { auth: localStorage.getItem("TOKEN")! } : undefined),
   setOctokit: () => { },
   setUserInfo: () => { },
+  setUserInfoLoading: () => { },
 })
 
 export interface GlobalConsumerProps {
   authorised: boolean;
   userInfo?: UsersGetAuthenticatedResponse;
+  userInfoLoading?: boolean;
   currentYear?: number;
   /**
    * ref: https://octokit.github.io/rest.js
@@ -23,6 +25,7 @@ export interface GlobalConsumerProps {
   octokit: Octokit;
   setOctokit: (octokit: Octokit) => void;
   setUserInfo: (userInfo: UsersGetAuthenticatedResponse) => void;
+  setUserInfoLoading: (loading: boolean) => void;
 }
 
 export const GlobalContext = React.createContext<GlobalConsumerProps>(setDefaultGlobalData());

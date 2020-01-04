@@ -36,14 +36,19 @@ const useStyles = makeStyles((theme: Theme) => createStyles({
 
 export default function UserInfo() {
   const classes = useStyles();
-  const { authorised, setOctokit, userInfo } = useContext(GlobalContext);
-  const { loading } = useUserInfo();
+  const {
+    authorised,
+    setOctokit,
+    userInfo,
+    userInfoLoading = false,
+  } = useContext(GlobalContext);
+  useUserInfo();
 
-  const isReponseOk = authorised && !loading && userInfo;
+  const isReponseOk = authorised && !userInfoLoading && userInfo;
 
   const handleClick = () => {
-    if (process.env.NODE_ENV === 'development') {
-      setOctokit(new octokit({ auth: 'abf85bed5650b92c79ef363a4f715c5ba2fe00de' }));
+    if (!authorised && process.env.NODE_ENV === 'development') {
+      setOctokit(new octokit({ auth: 'bc3f53b7cdd6752731387cf1eb23448311c4cb3b' }));
       return;
     }
 
@@ -55,7 +60,7 @@ export default function UserInfo() {
   }
 
   return (
-    <Spin spinning={loading}>
+    <Spin spinning={userInfoLoading}>
       <Card>
         <CardHeader
           avatar={
@@ -78,7 +83,7 @@ export default function UserInfo() {
             color="primary"
             onClick={handleClick}
           >
-            {authorised && !loading ? "homepage" : "authorize"}
+            {authorised && !userInfoLoading ? "homepage" : "authorize"}
           </Button>
         </CardActions>
       </Card>

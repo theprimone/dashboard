@@ -19,6 +19,7 @@ export class GlobalProvider extends React.Component<GlobalProviderProps, GlobalP
       ...setDefaultGlobalData(),
       setOctokit: this.setOctokit,
       setUserInfo: this.setUserInfo,
+      setUserInfoLoading: this.setUserInfoLoading,
     };
   }
 
@@ -32,6 +33,12 @@ export class GlobalProvider extends React.Component<GlobalProviderProps, GlobalP
   setUserInfo = (data: UsersGetAuthenticatedResponse) => {
     this.setState({
       userInfo: data,
+    });
+  }
+
+  setUserInfoLoading = (loading: boolean) => {
+    this.setState({
+      userInfoLoading: loading,
     });
   }
 

@@ -16,15 +16,20 @@ export function useCode(): [string, string | undefined, AsyncState<GetTokenRespo
   return [code, token, state];
 }
 
-let userInfoFetching = false;
 export function useUserInfo() {
-  const { authorised, octokit, setUserInfo, userInfo } = useContext(GlobalContext);
+  const {
+    authorised,
+    octokit,
+    setUserInfo,
+    userInfo,
+    setUserInfoLoading,
+  } = useContext(GlobalContext);
   async function getUserInfo() {
-    if (authorised && !userInfo && !userInfoFetching) {
-      userInfoFetching = true;
+    if (authorised && !userInfo) {
+      setUserInfoLoading(true);
       const response = await octokit.users.getAuthenticated();
       setUserInfo(response.data);
-      userInfoFetching = false;
+      setUserInfoLoading(false);
       return response;
     }
   }
