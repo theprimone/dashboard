@@ -42,8 +42,10 @@ export default function PersonalInfo() {
   const isReponseOk = authorised && !loading && userInfo;
 
   const handleClick = () => {
-    setOctokit(new octokit({ auth: 'abf85bed5650b92c79ef363a4f715c5ba2fe00de' }));
-    return;
+    if (process.env.NODE_ENV === 'development') {
+      setOctokit(new octokit({ auth: 'abf85bed5650b92c79ef363a4f715c5ba2fe00de' }));
+      return;
+    }
 
     if (authorised) {
       window.open(userInfo?.html_url, '_blank');
