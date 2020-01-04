@@ -33,7 +33,7 @@ function FadeInOut({ children }: { children: { key: string; node: JSX.Element }[
       {(interpolatedStyles) => (
         <div>
           {interpolatedStyles.map((config) => {
-            console.log(config);
+            // console.log(config);
             return (
               <div key={config.key} style={config.style}>
                 {config.data}
@@ -56,12 +56,13 @@ const DashBoard: React.FC = () => {
           {
             key: 'dashboard',
             node: (
-              <Container>
+              <Container disableGutters>
                 <Grid container spacing={1}>
-                  <Grid item xs={4}>
+                  {/*breakpoints ref: https://material-ui.com/customization/breakpoints/ */}
+                  <Grid item xs={12} sm={4}>
                     <UserInfo />
                   </Grid>
-                  <Grid item xs={8}>
+                  <Grid item xs={12} sm={8}>
                     <Repos />
                   </Grid>
                 </Grid>
@@ -71,7 +72,7 @@ const DashBoard: React.FC = () => {
             {
               key: 'authorise',
               node: (
-                <div className={styles.center}>
+                <div className={styles.center} style={{ width: 320 }}>
                   <UserInfo />
                 </div>
               ),
