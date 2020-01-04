@@ -5,7 +5,7 @@ import {
 } from '@material-ui/core';
 import { TransitionMotion, spring, presets } from 'react-motion';
 import GlobalContext from '@/components/GlobalContext/context';
-import PersonalInfo from '@/business-components/PersonalInfo';
+import UserInfo from '@/business-components/UserInfo';
 import Repos from '@/business-components/Repos';
 import styles from './index.less';
 
@@ -59,7 +59,7 @@ const DashBoard: React.FC = () => {
               <Container>
                 <Grid container spacing={1}>
                   <Grid item xs={4}>
-                    <PersonalInfo />
+                    <UserInfo />
                   </Grid>
                   <Grid item xs={8}>
                     <Repos />
@@ -72,7 +72,7 @@ const DashBoard: React.FC = () => {
               key: 'authorise',
               node: (
                 <div className={styles.center}>
-                  <PersonalInfo />
+                  <UserInfo />
                 </div>
               ),
             }
