@@ -12,7 +12,8 @@ const config: IConfig = {
           path: '/',
           component: '../layouts/BasicLayout',
           routes: [
-            { path: '/', component: '../pages/index' }
+            { path: '/', component: '../pages/index' },
+            { path: '/dashboard', component: '../pages/Dashboard' },
           ],
         }
       ]
