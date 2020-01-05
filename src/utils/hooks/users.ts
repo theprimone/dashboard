@@ -20,16 +20,20 @@ export function useUserInfo() {
   const {
     authorised,
     octokit,
+    userInfoLoading,
+    userInfo,
     setUserInfo,
     setUserInfoLoading,
   } = useContext(GlobalContext);
 
   async function getUserInfo() {
-    setUserInfoLoading(true);
-    const response = await octokit.users.getAuthenticated();
-    setUserInfoLoading(false);
-    setUserInfo(response.data);
-    return response;
+    if (!userInfo && !userInfoLoading) {
+      setUserInfoLoading(true);
+      const response = await octokit.users.getAuthenticated();
+      setUserInfoLoading(false);
+      setUserInfo(response.data);
+      return response;
+    }
   }
   return useAsync(getUserInfo, [authorised, octokit]);
 }
