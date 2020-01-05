@@ -7,17 +7,15 @@ import {
   Button,
   Typography,
   Avatar,
-  makeStyles,
-  createStyles,
-  Theme,
 } from '@material-ui/core';
 import moment from 'moment';
 import { stringify } from 'qs';
-import octokit from '@octokit/rest';
 import Spin from '@/components/Spin';
 import GlobalContext from '@/components/GlobalContext/context';
 import { useUserInfo } from '@/utils/hooks/users';
+import setOctokit from '@/utils/octokit';
 import { AUTHORIZE_URL, CLIENT_ID, SCOPE } from '@/utils/constants';
+import router from 'umi/router';
 
 function authorize() {
   const params = {
@@ -27,18 +25,10 @@ function authorize() {
   window.location.href = `${AUTHORIZE_URL}?${stringify(params)}`;
 }
 
-const useStyles = makeStyles((theme: Theme) => createStyles({
-  large: {
-    width: theme.spacing(7),
-    height: theme.spacing(7),
-  },
-}));
-
 export default function UserInfo() {
-  const classes = useStyles();
   const {
     authorised,
-    setOctokit,
+    setOctokit: setGlobalOctokit,
     userInfo,
     userInfoLoading = false,
   } = useContext(GlobalContext);
@@ -48,7 +38,7 @@ export default function UserInfo() {
 
   const handleClick = () => {
     if (!authorised && process.env.NODE_ENV === 'development') {
-      setOctokit(new octokit({ auth: 'bc3f53b7cdd6752731387cf1eb23448311c4cb3b' }));
+      setGlobalOctokit(setOctokit({ auth: 'bc3f53b7cdd6752731387cf1eb23448311c4cb3b' }));
       return;
     }
 
@@ -57,6 +47,12 @@ export default function UserInfo() {
       return;
     }
     authorize();
+  }
+
+  const handleExit = () => {
+    setGlobalOctokit(setOctokit());
+    localStorage.clear();
+    router.push('/');
   }
 
   return (
@@ -70,11 +66,11 @@ export default function UserInfo() {
             />
           }
           title={isReponseOk ? userInfo!.login : "Visitor"}
-          subheader={isReponseOk ? moment(userInfo!.created_at).format('YYYY-MM-DD HH:mm:ss') : "Hello."}
+          subheader={isReponseOk ? moment(userInfo!.created_at).format('YYYY-MM-DD HH:mm:ss') : "-"}
         />
         <CardContent>
           <Typography variant="body2" color="textSecondary" component="p">
-            {isReponseOk ? userInfo!.bio : "Click button to authorize by github."}
+            {isReponseOk ? userInfo!.bio : "-"}
           </Typography>
         </CardContent>
         <CardActions>
@@ -83,7 +79,14 @@ export default function UserInfo() {
             color="primary"
             onClick={handleClick}
           >
-            {authorised && !userInfoLoading ? "homepage" : "authorize"}
+            homepage
+          </Button>
+          <Button
+            size="small"
+            color="primary"
+            onClick={handleExit}
+          >
+            exit
           </Button>
         </CardActions>
       </Card>
