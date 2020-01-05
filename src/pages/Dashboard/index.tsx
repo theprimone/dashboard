@@ -2,12 +2,12 @@ import React, { useContext } from 'react';
 import {
   Container,
   Grid,
+  Grow,
 } from '@material-ui/core';
 import { TransitionMotion, spring, presets } from 'react-motion';
 import GlobalContext from '@/components/GlobalContext/context';
 import UserInfo from '@/business-components/UserInfo';
 import Repos from '@/business-components/Repos';
-import styles from './index.less';
 
 function FadeInOut({ children }: { children: { key: string; node: JSX.Element }[] }) {
   function willEnter() {
@@ -47,39 +47,24 @@ function FadeInOut({ children }: { children: { key: string; node: JSX.Element }[
 }
 
 const DashBoard: React.FC = () => {
-  const { authorised } = useContext(GlobalContext);
+  const { authorised, userInfo } = useContext(GlobalContext);
+
+  const isValidAccount = !!(authorised && userInfo);
 
   return (
-    <>
-      <FadeInOut>
-        {authorised ? [
-          {
-            key: 'dashboard',
-            node: (
-              <Container disableGutters>
-                <Grid container>
-                  {/*breakpoints ref: https://material-ui.com/customization/breakpoints/ */}
-                  <Grid item xs={12} sm={4}>
-                    <UserInfo />
-                  </Grid>
-                  <Grid item xs={12} sm={8}>
-                    <Repos />
-                  </Grid>
-                </Grid>
-              </Container>
-            ),
-          }] : [
-            {
-              key: 'authorise',
-              node: (
-                <div className={styles.center} style={{ width: 320 }}>
-                  <UserInfo />
-                </div>
-              ),
-            }
-          ]}
-      </FadeInOut>
-    </>
+    <Container disableGutters>
+      <Grid container>
+        {/*breakpoints ref: https://material-ui.com/customization/breakpoints/ */}
+        <Grid item xs={12} sm={4}>
+          <UserInfo />
+        </Grid>
+        <Grow in={isValidAccount}>
+          <Grid item xs={12} sm={8}>
+            <Repos />
+          </Grid>
+        </Grow>
+      </Grid>
+    </Container>
   )
 }
 
