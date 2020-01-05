@@ -8,6 +8,7 @@ import { TransitionMotion, spring, presets } from 'react-motion';
 import GlobalContext from '@/components/GlobalContext/context';
 import UserInfo from '@/business-components/UserInfo';
 import Repos from '@/business-components/Repos';
+import styles from './index.less';
 
 function FadeInOut({ children }: { children: { key: string; node: JSX.Element }[] }) {
   function willEnter() {
@@ -47,24 +48,51 @@ function FadeInOut({ children }: { children: { key: string; node: JSX.Element }[
 }
 
 const DashBoard: React.FC = () => {
-  const { authorised, userInfo } = useContext(GlobalContext);
+  const { authorised, userInfo, userInfoLoading } = useContext(GlobalContext);
 
   const isValidAccount = !!(authorised && userInfo);
 
+  function renderChildren() {
+    if (userInfoLoading) {
+      return [
+        {
+          key: 'userinfoLoading',
+          node: (
+            <div className={styles.center} style={{ width: 320 }}>
+              <UserInfo />
+            </div>
+          ),
+        }
+      ];
+    }
+    return [
+      {
+        key: 'dashboard',
+        node: (
+          <Container disableGutters>
+            <Grid container>
+              {/*breakpoints ref: https://material-ui.com/customization/breakpoints/ */}
+              <Grow in={isValidAccount}>
+                <Grid item xs={12} sm={4}>
+                  <UserInfo />
+                </Grid>
+              </Grow>
+              <Grow in={isValidAccount} timeout={1000}>
+                <Grid item xs={12} sm={8}>
+                  <Repos />
+                </Grid>
+              </Grow>
+            </Grid>
+          </Container>
+        ),
+      },
+    ]
+  }
+
   return (
-    <Container disableGutters>
-      <Grid container>
-        {/*breakpoints ref: https://material-ui.com/customization/breakpoints/ */}
-        <Grid item xs={12} sm={4}>
-          <UserInfo />
-        </Grid>
-        <Grow in={isValidAccount}>
-          <Grid item xs={12} sm={8}>
-            <Repos />
-          </Grid>
-        </Grow>
-      </Grid>
-    </Container>
+    <FadeInOut>
+      {renderChildren()}
+    </FadeInOut>
   )
 }
 
