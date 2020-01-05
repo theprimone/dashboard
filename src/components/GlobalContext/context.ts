@@ -1,7 +1,7 @@
 import React from 'react';
 // import moment from 'moment';
 import { UsersGetAuthenticatedResponse } from '@octokit/rest';
-import Octokit from '@octokit/rest';
+import Octokit, { Options } from '@octokit/rest';
 import setOctokit from '@/utils/octokit';
 
 export const isAuthorised = () => !!localStorage.getItem("TOKEN");
@@ -28,8 +28,8 @@ export interface GlobalConsumerProps {
    */
   octokit: Octokit;
   setAuthorised: (authorised: boolean) => void;
-  setOctokit: (octokit: Octokit) => void;
-  setUserInfo: (userInfo: UsersGetAuthenticatedResponse) => void;
+  setOctokit: (options?: Options) => void;
+  setUserInfo: (userInfo?: UsersGetAuthenticatedResponse) => void;
   setUserInfoLoading: (loading: boolean) => void;
 }
 
