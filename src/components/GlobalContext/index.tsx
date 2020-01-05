@@ -17,10 +17,17 @@ export class GlobalProvider extends React.Component<GlobalProviderProps, GlobalP
 
     this.state = {
       ...setDefaultGlobalData(),
+      setAuthorised: this.setAuthorised,
       setOctokit: this.setOctokit,
       setUserInfo: this.setUserInfo,
       setUserInfoLoading: this.setUserInfoLoading,
     };
+  }
+
+  setAuthorised = (authorised: boolean) => {
+    this.setState({
+      authorised,
+    })
   }
 
   setOctokit = (octokit: Octokit) => {
