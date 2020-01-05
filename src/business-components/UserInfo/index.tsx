@@ -13,7 +13,6 @@ import { stringify } from 'qs';
 import Spin from '@/components/Spin';
 import GlobalContext from '@/components/GlobalContext/context';
 import { useUserInfo } from '@/utils/hooks/users';
-import setOctokit from '@/utils/octokit';
 import { AUTHORIZE_URL, CLIENT_ID, SCOPE } from '@/utils/constants';
 import router from 'umi/router';
 
@@ -28,9 +27,10 @@ function authorize() {
 export default function UserInfo() {
   const {
     authorised,
-    setOctokit: setGlobalOctokit,
+    setOctokit,
     userInfo,
     userInfoLoading = false,
+    setUserInfo,
   } = useContext(GlobalContext);
   useUserInfo();
 
@@ -38,7 +38,7 @@ export default function UserInfo() {
 
   const handleClick = () => {
     if (!authorised && process.env.NODE_ENV === 'development') {
-      setGlobalOctokit(setOctokit({ auth: 'bc3f53b7cdd6752731387cf1eb23448311c4cb3b' }));
+      setOctokit({ auth: 'bc3f53b7cdd6752731387cf1eb23448311c4cb3b' });
       return;
     }
 
@@ -50,8 +50,9 @@ export default function UserInfo() {
   }
 
   const handleExit = () => {
-    setGlobalOctokit(setOctokit());
     localStorage.clear();
+    setUserInfo();
+    setOctokit();
     router.push('/');
   }
 

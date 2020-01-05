@@ -8,14 +8,12 @@ import {
   CardContent,
   Button,
   Typography,
-  Avatar,
 } from '@material-ui/core';
 import { stringify } from 'qs';
 import router from 'umi/router';
-import octokit from '@octokit/rest';
+import GitHubIcon from '@material-ui/icons/GitHub';
 import GlobalContext from '@/components/GlobalContext/context';
 import { AUTHORIZE_URL, CLIENT_ID, SCOPE } from '@/utils/constants';
-import setOctokit from '@/utils/octokit';
 import styles from './index.less';
 
 function authorize() {
@@ -27,13 +25,13 @@ function authorize() {
 }
 
 export default function Authorize() {
-  const { setOctokit: setGlobalOctokit } = useContext(GlobalContext);
+  const { setOctokit } = useContext(GlobalContext);
 
   const handleClick = () => {
     if (process.env.NODE_ENV === 'production') {
       authorize();
     } else {
-      setGlobalOctokit(setOctokit({ auth: 'd7765e7193e77ebe74f6e3c11e9ec3c7f0f7e53c' }));
+      setOctokit({ auth: 'd7765e7193e77ebe74f6e3c11e9ec3c7f0f7e53c' });
       localStorage.setItem('TOKEN', 'd7765e7193e77ebe74f6e3c11e9ec3c7f0f7e53c');
       router.push('/dashboard');
     }
@@ -43,7 +41,7 @@ export default function Authorize() {
     <div className={styles.center} style={{ width: 320 }}>
       <Card>
         <CardHeader
-          avatar={<Avatar />}
+          avatar={<GitHubIcon fontSize='large' />}
           title="Visitor"
           subheader="Hello."
         />

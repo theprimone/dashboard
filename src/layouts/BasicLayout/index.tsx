@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import router from 'umi/router';
 import GlobalContext from '@/components/GlobalContext/context';
-import setOctokit from '@/utils/octokit';
 import { useCode } from '@/utils/hooks/users';
 
 const BasicLayout: React.FC = props => {
@@ -12,7 +11,7 @@ const BasicLayout: React.FC = props => {
     if (state.loading) {
       return <p>Get token...</p>;
     } else if (token) {
-      setGlobalOctokit(setOctokit({ auth: token }));
+      setGlobalOctokit({ auth: token });
       localStorage.setItem("TOKEN", token);
       router.replace('/dashboard');
     }
