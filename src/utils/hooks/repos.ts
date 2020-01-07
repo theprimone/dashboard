@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useAsync } from 'react-use';
-import { AnyResponse } from '@octokit/rest';
+import { Response, AnyResponse } from '@octokit/rest';
 import moment from 'moment';
 import GlobalContext from '@/components/GlobalContext/context';
 
@@ -59,14 +59,17 @@ export interface ReposListItem {
   };
 }
 
+let lastRepos: Response<ReposListItem[]>;
 const reposPerPage = 100;
 export function useRepos() {
   const { authorised, octokit, currentYear } = useContext(GlobalContext);
-  
+
   async function getRepos() {
     if (!authorised) { return; }
+    if (lastRepos) { return lastRepos; }
+    
     const repos: ReposListItem[] = [];
-
+    
     /**
      * 返回值表示是否异常中断
      * 
@@ -105,10 +108,13 @@ export function useRepos() {
       };
     } while (pageSize === reposPerPage);
 
-    return {
+    const result = {
       ...reposListResponse,
       data: repos,
-    }
+    };
+    lastRepos = result;
+
+    return result;
   }
   return useAsync(getRepos, [authorised, octokit]);
 }
