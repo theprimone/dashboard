@@ -92,6 +92,7 @@ export default memo(function Repos() {
                   variant='outlined'
                   style={{
                     marginRight: 8,
+                    marginBottom: 4,
                   }}
                 />
               ))}
