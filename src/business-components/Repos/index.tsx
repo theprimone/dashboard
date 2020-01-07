@@ -1,10 +1,11 @@
-import React, { useContext } from 'react';
+import React, { memo } from 'react';
 import {
   Card,
   CardHeader,
   CardContent,
   Typography,
   Grid,
+  Chip,
   createStyles,
   makeStyles,
 } from '@material-ui/core';
@@ -12,8 +13,7 @@ import BookIcon from '@material-ui/icons/Book';
 import StarIcon from '@material-ui/icons/Star';
 import CallSplitIcon from '@material-ui/icons/CallSplit';
 import Spin from '@/components/Spin';
-import GlobalContext from '@/components/GlobalContext/context';
-import { useRepos, ReposListItem } from '@/utils/hooks/repos';
+import { useRepos } from '@/utils/hooks/repos';
 
 function sumArray<T>(arr: T[], field: string) {
   const reducer = (accumulator: number, currentValue: T) => accumulator + (currentValue as any)?.[field];
@@ -26,7 +26,8 @@ const useStyles = makeStyles(() => createStyles({
   },
 }));
 
-export default function Repos() {
+export default memo(function Repos() {
+  console.log('render Repos');
   const classes = useStyles();
   const { value, loading } = useRepos();
 
@@ -34,6 +35,8 @@ export default function Repos() {
   const starsCount = () => data ? sumArray(data, 'stargazers_count') : 0;
 
   const forksCount = () => data ? sumArray(data, 'forks_count') : 0;
+
+  const languages = data ? [...new Set(data.map(item => item.language).filter(item => item))] : [];
 
   const renderGrid = (node: JSX.Element) => {
     return (
@@ -75,9 +78,27 @@ export default function Repos() {
                 {forksCount()}
               </Typography>
             )}
+            <Grid
+              item
+              xs={12}
+              style={{
+                marginTop: 16,
+              }}
+            >
+              {languages.map(item => (
+                <Chip
+                  key={item}
+                  label={item}
+                  variant='outlined'
+                  style={{
+                    marginRight: 8,
+                  }}
+                />
+              ))}
+            </Grid>
           </Grid>
         </CardContent>
       </Card>
     </Spin>
   );
-}
+})
