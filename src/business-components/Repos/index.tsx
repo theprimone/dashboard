@@ -6,6 +6,7 @@ import {
   Typography,
   Grid,
   Chip,
+  Paper,
   createStyles,
   makeStyles,
 } from '@material-ui/core';
@@ -35,6 +36,8 @@ export default memo(function Repos() {
   const starsCount = () => data ? sumArray(data, 'stargazers_count') : 0;
 
   const forksCount = () => data ? sumArray(data, 'forks_count') : 0;
+
+  const top3Repos = data ? data.sort((a, b) => -(a.stargazers_count - b.stargazers_count)).slice(0, 3).filter(item => item) : [];
 
   const languages = data ? [...new Set(data.map(item => item.language).filter(item => item))] : [];
 
@@ -85,6 +88,39 @@ export default memo(function Repos() {
                 marginTop: 16,
               }}
             >
+              <Typography variant='subtitle1' gutterBottom>
+                Top 3 Repos by Stargazers
+              </Typography>
+              {top3Repos.map((item, index) => (
+                <Paper
+                  key={item.id}
+                  variant='outlined'
+                  style={{
+                    marginBottom: 8,
+                    padding: '4px 8px',
+                  }}
+                >
+                  <Typography>
+                    {index + 1}.&nbsp;
+                    {item.name}&nbsp;
+                    <StarIcon className={classes.icon} />{item.stargazers_count}
+                  </Typography>
+                  <Typography>
+                    {item.description}
+                  </Typography>
+                </Paper>
+              ))}
+            </Grid>
+            <Grid
+              item
+              xs={12}
+              style={{
+                marginTop: 12,
+              }}
+            >
+              <Typography variant='subtitle1' gutterBottom>
+                Used Languages
+              </Typography>
               {languages.map(item => (
                 <Chip
                   key={item}
