@@ -91,7 +91,7 @@ export default memo(function Repos() {
               <Typography variant='subtitle1' gutterBottom>
                 Top 3 Repos by Stargazers
               </Typography>
-              {top3Repos.map((item, index) => (
+              {top3Repos.map(item => (
                 <Paper
                   key={item.id}
                   variant='outlined'
