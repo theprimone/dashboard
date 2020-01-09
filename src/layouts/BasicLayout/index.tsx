@@ -1,25 +1,19 @@
 import React, { useContext } from 'react';
-import router from 'umi/router';
 import GlobalContext from '@/components/GlobalContext/context';
-import { useCode } from '@/utils/hooks/users';
+import { getCode } from '@/utils/utils';
+import Start from '@/pages/Start';
+import Authorize from '@/pages/Authorize';
 
 const BasicLayout: React.FC = props => {
-  const { setOctokit: setGlobalOctokit, authorised } = useContext(GlobalContext);
-  const [code, token, state] = useCode();
+  const { authorised } = useContext(GlobalContext);
+  const code = getCode();
 
   if (code) {
-    if (state.loading) {
-      return <p>Get token...</p>;
-    } else if (token) {
-      setGlobalOctokit({ auth: token });
-      localStorage.setItem("TOKEN", token);
-      router.replace('/dashboard');
-    }
-    return <p>Get token failed.</p>
+    return <Authorize />;
   }
 
-  if (authorised) {
-    router.push('/dashboard');
+  if (!authorised) {
+    return <Start />
   }
 
   return (
