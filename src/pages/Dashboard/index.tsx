@@ -47,53 +47,28 @@ function FadeInOut({ children }: { children: { key: string; node: JSX.Element }[
   )
 }
 
-const DashBoard: React.FC = () => {
-  const { authorised, userInfo, userInfoLoading } = useContext(GlobalContext);
+const Dashboard: React.FC = () => {
+  const { authorised, userInfo } = useContext(GlobalContext);
 
   const isValidAccount = !!(authorised && userInfo);
 
-  function renderChildren() {
-    if (userInfoLoading) {
-      return [
-        {
-          key: 'userinfoLoading',
-          node: (
-            <div className={styles.center} style={{ width: 320 }}>
-              <UserInfo />
-            </div>
-          ),
-        }
-      ];
-    }
-    return [
-      {
-        key: 'dashboard',
-        node: (
-          <Container disableGutters>
-            <Grid container>
-              {/*breakpoints ref: https://material-ui.com/customization/breakpoints/ */}
-              <Grow in={isValidAccount}>
-                <Grid item xs={12} sm={4}>
-                  <UserInfo />
-                </Grid>
-              </Grow>
-              <Grow in={isValidAccount} timeout={1000}>
-                <Grid item xs={12} sm={8}>
-                  <Repos />
-                </Grid>
-              </Grow>
-            </Grid>
-          </Container>
-        ),
-      },
-    ]
-  }
-
   return (
-    <FadeInOut>
-      {renderChildren()}
-    </FadeInOut>
-  )
+    <Container disableGutters>
+      <Grid container>
+        {/*breakpoints ref: https://material-ui.com/customization/breakpoints/ */}
+        <Grow in={isValidAccount}>
+          <Grid item xs={12} sm={4}>
+            <UserInfo />
+          </Grid>
+        </Grow>
+        <Grow in={isValidAccount} timeout={1000}>
+          <Grid item xs={12} sm={8}>
+            <Repos />
+          </Grid>
+        </Grow>
+      </Grid>
+    </Container>
+  );
 }
 
-export default DashBoard;
+export default Dashboard;
