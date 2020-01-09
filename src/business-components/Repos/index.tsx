@@ -101,7 +101,6 @@ export default memo(function Repos() {
                   }}
                 >
                   <Typography>
-                    {index + 1}.&nbsp;
                     {item.name}&nbsp;
                     <StarIcon className={classes.icon} />{item.stargazers_count}
                   </Typography>
