@@ -31,9 +31,10 @@ export default function Authorize() {
     if (process.env.NODE_ENV === 'production') {
       authorize();
     } else {
-      setOctokit({ auth: 'd7765e7193e77ebe74f6e3c11e9ec3c7f0f7e53c' });
-      localStorage.setItem('TOKEN', 'd7765e7193e77ebe74f6e3c11e9ec3c7f0f7e53c');
-      router.push('/dashboard');
+      const token = 'e52464ba609d2ef1bbfc4ebec48b297942bd8e47';
+      setOctokit({ auth: token });
+      localStorage.setItem('TOKEN', token);
+      router.push('/');
     }
   }
 
