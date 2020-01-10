@@ -101,8 +101,11 @@ export default memo(function Repos() {
                   }}
                 >
                   <Typography>
-                    {item.name}&nbsp;
-                    <StarIcon className={classes.icon} />{item.stargazers_count}
+                    <a href={item.html_url} target='_blank'>{item.name}</a>&nbsp;
+                    <StarIcon className={classes.icon} />
+                    <a href={`${item.html_url}/stargazers`}>
+                      {item.stargazers_count}
+                    </a>
                   </Typography>
                   <Typography>
                     {item.description}
